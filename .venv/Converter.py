@@ -15,7 +15,6 @@ root.title('Converter')
 root.geometry('500x500')
 root.resizable(False, False)
 
-pb = ttk.Progressbar(root, orient='horizontal', mode='determinate', length=200)
 
 message_label = tk.Label(root, text="", bg='white',fg='green', font=("Arial", 12))
 message_label.pack(pady=10)
@@ -23,15 +22,11 @@ message_label.pack(pady=10)
 def add_file():
     file_path = filedialog.askopenfilename()
     if file_path:
-
         video_file = Path(file_path)
         print(f"Selected file: {file_path}")
-        threading.Thread(target=convert_to_audio, args=(video_file,)).start()
         convert_to_audio(video_file)
 
 
-        pb.pack(pady=10)
-        pb['value'] = 0
 
 def convert_to_audio(video_file):
     video = moviepy.editor.VideoFileClip(f'{video_file}')
@@ -40,9 +35,6 @@ def convert_to_audio(video_file):
     output_path = desktop_path / f'{video_file.stem}.mp3'
 
     audio.write_audiofile(output_path)
-
-    pb['value'] = 100
-
     message_label.config(text=f"Audio saved to {output_path}", fg = 'green')
 
 
